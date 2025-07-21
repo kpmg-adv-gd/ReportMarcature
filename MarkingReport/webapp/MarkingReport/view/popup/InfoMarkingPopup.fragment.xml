@@ -1,0 +1,71 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName="kpmg.custom.markingReport.MarkingReport.MarkingReport.controller.popup.InfoMarkingPopup"
+    width="100%"
+    height="100%"
+>
+    <Dialog id="infoMarkingDialog" title="Marking Info" showHeader="true" contentHeight="550px"  contentWidth="1100px" verticalScrolling="false" horizontalScrolling="false"> 
+        <content>
+            <!-- Container principale -->
+            <VBox width="100%" height="100%" renderType="Bare" alignItems="Center" justifyContent="SpaceBetween">
+                <!-- Header -->
+                <HBox width="90%" height="15%" renderType="Bare" justifyContent="SpaceAround">
+                    <HBox renderType="Bare" alignItems="Center">
+                        <Label text="Project" class="markingHeaderLabel markingSmallLabel sapUiSmallMarginEnd"/>
+                        <Label text="{/project}" class="markingSmallLabel"/>
+                    </HBox>
+                    <HBox renderType="Bare" alignItems="Center" >
+                        <Label text="WBS Element" class="markingHeaderLabel markingSmallLabel sapUiSmallMarginEnd"/>
+                        <Label text="{/wbe}" class="markingSmallLabel"/>
+                    </HBox>
+                    <HBox renderType="Bare" alignItems="Center" justifyContent="End">
+                        <Label text="SFC" class="markingHeaderLabel markingSmallLabel sapUiSmallMarginEnd"/>
+                        <Label text="{/sfc}" class="markingSmallLabel"/>
+                    </HBox>
+                </HBox>
+
+                <!-- Operazione e Numero Conferma -->
+                <VBox width="90%" height="20%" renderType="Bare" justifyContent="SpaceBetween">
+                    <HBox width="100%" renderType="Bare" alignItems="Center">
+                        <Label text="Operation" class="markingMediumLabel markingMediumLabelWidth13Rem sapUiSmallMarginEnd"/>
+                        <Label text="{/operation}" class="markingMediumLabelValue" />
+                    </HBox>
+                    <HBox width="100%" renderType="Bare" alignItems="Center">
+                        <Label text="Operation Description" class="markingMediumLabel markingMediumLabelWidth13Rem sapUiSmallMarginEnd"/>
+                        <Label text="{/operation_description}" class="markingMediumLabelValue" />
+                    </HBox>
+                    <HBox width="100%" renderType="Bare" alignItems="Center">
+                        <Label text="Confirmation Number" class="markingMediumLabel markingMediumLabelWidth13Rem sapUiSmallMarginEnd"/>
+                        <Label text="{/confirmNumber}" class="markingMediumLabelValue"/>
+                    </HBox>
+                </VBox>
+                <!-- Ore previste/consuntivate/rimanenti -->
+                <VBox width="90%" class="infoMarkingHoursContainer" renderType="Bare" justifyContent="SpaceBetween">
+                    <HBox width="100%" renderType="Bare" alignItems="Center">
+                        <Label text="Planned Labor" class="markingMediumLabel markingMediumLabelWidth13Rem sapUiSmallMarginEnd"/>
+                        <Label text="{/plannedLabor} {/uom_planned_labor}" class="markingMediumLabelValue"/>
+                    </HBox>
+                    <HBox width="100%" renderType="Bare" alignItems="Center">
+                        <Label text="Marked Labor" class="markingMediumLabel markingMediumLabelWidth13Rem sapUiSmallMarginEnd"/>
+                        <Label text="{/markedLabor} {/uom_marked_labor}" class="markingMediumLabelValue"/>
+                    </HBox>
+                    <HBox width="100%" renderType="Bare" alignItems="Center">
+                        <Label text="Remaining Labor" class="markingMediumLabel markingMediumLabelWidth13Rem sapUiSmallMarginEnd"/>
+                        <Label text="{/remainingLabor} {/uom_remaining_labor}" class="markingMediumLabelValue"/>
+                    </HBox>
+                    <HBox width="100%" renderType="Bare" alignItems="Center">
+                        <Label text="Variance Labor" class="markingMediumLabel markingMediumLabelWidth13Rem sapUiSmallMarginEnd"/>
+                        <Label text="{/varianceLabor} {/uom_variance}" class="markingMediumLabelValue"/>
+                    </HBox>
+                </VBox>
+                <HBox width="90%" height="10%"  renderType="Bare" alignItems="Center" justifyContent="End">
+                    <Button text="Close" type="Emphasized" press="onClosePopup" class="sapUiSmallMarginEnd" />
+                </HBox> 
+            </VBox>
+        </content>
+    </Dialog>
+</core:FragmentDefinition>

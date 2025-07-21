@@ -1,0 +1,14 @@
+{
+  "welcomeFile": "/MarkingReport/index.html",
+  "authenticationMethod": "none",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [
+    {
+      "source": "^/MarkingReport/(.*)$",
+      "target": "$1",
+      "localDir": "webapp"
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:t="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="kpmg.custom.markingReport.MarkingReport.MarkingReport.controller.MainView" width="100%" height="100%">
+    <Page title="{i18n>markingReport.title}" class="kpmgGDPage" showHeader="false" enableScrolling="false">
+        <content>
+            <VBox width="100%" height="100%" renderType="Bare">
+                <!-- Filtri e header tabella -->
+                <HBox width="100%" height="8%" class="smallPadding" renderType="Bare">
+                    <HBox width="70%" justifyContent="Start" height="100%" alignItems="Center" renderType="Bare">
+                        <HBox width="25%" height="100%" alignItems="Center" renderType="Bare">
+                            <Label text="{i18n>markingReport.label.project}:*" width="100%" textAlign="Left" class="kpmgGDMediumlLabelInfo autoWidth" />
+                            <Input id="projectInputId" placeholder="Enter Project ..." showSuggestion="true" showValueHelp="false" suggestionItems="{FilterModel>/Project}" class="width70Percentage padding1PercentageLeft">
+                                <suggestionItems>
+                                    <core:Item text="{FilterModel>DATA_FIELD_VALUE}" />
+                                </suggestionItems>
+                            </Input>
+                        </HBox>
+                        <HBox width="25%" height="100%" alignItems="Center" renderType="Bare">
+                            <Label text="{i18n>markingReport.label.wbe}:" width="100%" textAlign="Left" class="kpmgGDMediumlLabelInfo autoWidth" />
+                            <Input id="wbeInputId" placeholder="Enter WBS Element ..." showSuggestion="true" showValueHelp="false" suggestionItems="{FilterModel>/WBS}" class="width75Percentage padding1PercentageLeft">
+                                <suggestionItems>
+                                    <core:Item text="{FilterModel>DATA_FIELD_VALUE}" />
+                                </suggestionItems>
+                            </Input>
+                        </HBox>
+                        <HBox width="25%" height="100%" alignItems="Center" renderType="Bare">
+                            <Label text="{i18n>markingReport.label.user}:" width="100%" textAlign="Left" class="kpmgGDMediumlLabelInfo autoWidth" />
+                            <Input id="userInputId" placeholder="Enter User Id ..." showSuggestion="true" showValueHelp="false" suggestionItems="{FilterModel>/UserId}" class="width70Percentage padding1PercentageLeft">
+                                <suggestionItems>
+                                    <core:Item text="{FilterModel>USER_ID}" />
+                                </suggestionItems>
+                            </Input>
+                        </HBox>
+                        <HBox width="25%" height="100%" alignItems="Center" renderType="Bare">
+                            <Label text="{i18n>markingReport.label.markingDateRange}:" width="100%" textAlign="Left" class="kpmgGDMediumlLabelInfo autoWidth" />
+                            <DateRangeSelection id="dataRangeInputId" class="width70Percentage padding1PercentageLeft"
+                            value= "{
+                                'type': 'sap.ui.model.type.DateInterval',
+                                'formatOptions': {
+                                    'pattern': 'dd/MM/yyyy'
+                                },
+                                'parts': [
+                                    {
+                                        'type': 'sap.ui.model.type.Date',
+                                        'path': '/start'
+                                    },
+                                    {
+                                        'type': 'sap.ui.model.type.Date',
+                                        'path': '/end'
+                                    }
+                                ]
+                            }" />
+                        </HBox>
+                    </HBox>
+                    <HBox width="30%" justifyContent="End" height="100%" alignItems="Center" renderType="Bare">
+                        <Button text="{i18n>markingReport.button.search}" icon="sap-icon://search" type="Emphasized" class="buttonClassMedium marginRight1Percentage" press="onGoPress" />
+                        <Button text="{i18n>markingReport.button.storno}" enabled="{MarkingReportModel>/hasSelectedRow}" icon="sap-icon://delete" type="Default" class="buttonClassMedium marginRight1Percentage" press="onStornoPress" />
+                        <Button text="{i18n>markingReport.button.newMarking}" enabled="{MarkingReportModel>/hasSelectedRow}" icon="sap-icon://task" type="Accept" class="buttonClassMedium marginRight1Percentage" press="onNewMarkPress" />
+                        <Button icon="sap-icon://hint" type="Transparent" enabled="{MarkingReportModel>/hasSelectedRow}" class="buttonClassSmall marginRight1Percentage" press="onInfoMarkPress" />
+                        <Button icon="sap-icon://excel-attachment" type="Transparent" class="buttonClassSmall marginRight1Percentage" press="onExportExcel" />
+                    </HBox>
+                </HBox>
+                <!-- Tabella Report -->
+                <VBox width="100%" height="92%" renderType="Bare">
+                    <t:Table id="resultTable" rowSelectionChange="rowSelectionChange"  class="kpmgGDTable" rows="{MarkingReportModel>/OpConfirmations}" selectionMode="Single" selectionBehavior="RowOnly" visibleRowCountMode="Auto" rowHeight="45px" >
+                    <t:layoutData>
+                        <FlexItemData growFactor="1" baseSize="0%"/>
+                    </t:layoutData>
+                        <t:columns>
+                            <t:Column sortProperty="project" filterProperty="project" width="5.6%" hAlign="Center">
+                                <Label text="{i18n>markingReport.table.project}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{MarkingReportModel>project}"  />
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="wbe_machine" filterProperty="wbe_machine" width="7.6%" hAlign="Center">
+                                <Label text="{i18n>markingReport.table.wbe_machine}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{MarkingReportModel>wbe_machine}"  />
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="sfc" filterProperty="sfc" width="14.6%" hAlign="Center">
+                                <Label wrapping="false" text="{i18n>markingReport.table.sfc}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{MarkingReportModel>sfc}"  />
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="operation" filterProperty="operation" width="13.6%" hAlign="Center">
+                                <Label wrapping="false" text="{i18n>markingReport.table.operation}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{MarkingReportModel>operation}"  />
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="workcenter" filterProperty="workcenter" width="5.6%" hAlign="Center">
+                                <Label text="{i18n>markingReport.table.workcenter}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{MarkingReportModel>workcenter}"  />
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="confirmation_number" filterProperty="confirmation_number" width="6.6%"  hAlign="Center" >
+                                <Label text="{i18n>markingReport.table.confirmation_number}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{MarkingReportModel>confirmation_number}"  />
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="cancellation_flag" filterProperty="cancellation_flag" width="4.6%" hAlign="Center" >
+                                <Label text="{i18n>markingReport.table.cancellation_flag}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{= ${MarkingReportModel>cancellation_flag} === true ? 'X' : '' }"   />
+                                </t:template>
+                            </t:Column>  
+                            <t:Column sortProperty="marking_date" filterProperty="marking_date" width="6.6%" hAlign="Center">
+                                <Label text="{i18n>markingReport.table.marking_date}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{MarkingReportModel>marking_date}"  />
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="marked_labor" filterProperty="marked_labor" width="6.6%" hAlign="Center">
+                                <Label text="{i18n>markingReport.table.marked_labor}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{MarkingReportModel>marked_labor}"  />
+                                </t:template>
+                            </t:Column>    
+                            <t:Column sortProperty="variance_labor" filterProperty="variance_labor" width="6.6%" hAlign="Center">
+                                <Label text="{i18n>markingReport.table.variance_labor}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{MarkingReportModel>variance_labor}"  />
+                                </t:template>
+                            </t:Column>    
+                            <t:Column sortProperty="reason_for_variance" filterProperty="reason_for_variance" width="5.6%" hAlign="Center">
+                                <Label text="{i18n>markingReport.table.reason_for_variance}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{MarkingReportModel>reason_for_variance}"  />
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="user_id" filterProperty="user_id" width="8.6%" hAlign="Center">
+                                <Label text="{i18n>markingReport.table.user_id}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{MarkingReportModel>user_id}"  />
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="modification" filterProperty="modification" width="6.6%" hAlign="Center">
+                                <Label text="{i18n>markingReport.table.modification}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{MarkingReportModel>modification}"  />
+                                </t:template>
+                            </t:Column>                                
+                        </t:columns>
+                    </t:Table>
+                </VBox>
+            </VBox>
+        </content>   
+    </Page>
+</mvc:View>

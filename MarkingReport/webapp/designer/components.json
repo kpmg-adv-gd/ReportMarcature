@@ -1,0 +1,15 @@
+{
+	"components": [
+		{
+			"id": "MarkingReport",
+			"type": "VIEW_PLUGIN",
+			"allowMultipleInstances": false,
+			"name": "kpmg.custom.markingReport.MarkingReport.MarkingReport",
+			"propertyEditor": "kpmg.custom.markingReport.MarkingReport.MarkingReport.builder.PropertyEditor",
+			"i18n": "kpmg.custom.markingReport.MarkingReport.MarkingReport.i18n.i18n",
+            "productionProcessEnabled": true,
+            "productionProcessTitle": "MarkingReport",
+			"supportedPodTypes": ["WORK_CENTER","OPERATION","ORDER","OTHER"]
+		}   
+	]
+}
