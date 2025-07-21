@@ -1,0 +1,76 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName="kpmg.custom.plugin.marcaturenonproduttive.marcaturenonproduttive.controller.popup.MarkingPopup"
+    width="100%"
+    height="100%"
+>
+    <Dialog id="markingUnProdDialog" title="Marking" showHeader="true" contentHeight="480px" contentWidth="840px" verticalScrolling="false" horizontalScrolling="false"> 
+        <content>
+            <!-- Container principale -->
+            <VBox width="100%" height="100%" renderType="Bare" alignItems="Center" justifyContent="SpaceBetween">
+
+                <!-- Header -->
+                <HBox width="90%" height="15%" renderType="Bare" justifyContent="SpaceAround">
+                    <HBox renderType="Bare" alignItems="Center">
+                        <Label text="Date" class="markingHeaderLabel markingSmallLabel sapUiSmallMarginEnd" width="auto"/>
+                        <Label text="{path: '/day', formatter: '.formatDate'}" class="markingSmallLabel" width="auto"/>
+                    </HBox>
+                    <HBox renderType="Bare" alignItems="Center" >
+                        <Label text="Marked Labor" class="markingHeaderLabel markingSmallLabel sapUiSmallMarginEnd" width="auto"/>
+                        <Label text="{/value}" class="markingSmallLabel" width="auto"/>
+                    </HBox>
+                    <HBox renderType="Bare" alignItems="Center" justifyContent="End">
+                        <Label text="CID" class="markingHeaderLabel markingSmallLabel sapUiSmallMarginEnd" width="auto"/>
+                        <Input value="{/personnelNumber}" class="markingSmallLabel" width="auto"/>
+                    </HBox>
+                </HBox>
+
+                <!-- WBS -->
+                <HBox width="90%" height="18%" renderType="Bare" justifyContent="Center" alignItems="Center">
+                    <HBox renderType="Bare" alignItems="Center" justifyContent="Center" width="100%" height="100%">
+                        <Label text="WBS" class="markingMediumLabel markingMediumLabelWidth9Rem" width="35%" />
+                        <Label text="{/wbsDescription}" class="markingSmallLabel" width="65%"/>
+                    </HBox>
+                </HBox>
+
+                <!-- WBS Activity -->
+                <HBox width="90%" height="18%" renderType="Bare" justifyContent="Center" alignItems="Center">
+                    <HBox renderType="Bare" alignItems="Center" justifyContent="Center" width="100%" height="100%">
+                        <Label text="WBS Activity" class="markingMediumLabel markingMediumLabelWidth9Rem" width="35%" />
+                        <Label text="{/wbsActivityDescription}" class="markingSmallLabel" width="65%"/>
+                    </HBox>
+                </HBox>
+
+                <!-- Confirmation Number -->
+                <HBox width="90%" height="18%" renderType="Bare" justifyContent="Center" alignItems="Center">
+                    <HBox renderType="Bare" alignItems="Center" justifyContent="Center" width="100%" height="100%">
+                        <Label text="Confirmation Number" class="markingMediumLabel markingMediumLabelWidth9Rem" width="35%" />
+                        <Label text="{/confirmationNumber}" class="markingMediumLabel markingMediumLabelWidth9Rem" width="65%"/>
+                    </HBox>
+                </HBox>
+
+                <!-- hh e mm -->
+                <HBox width="90%" height="20%" renderType="Bare">
+                    <HBox width="15%" renderType="Bare" alignItems="Center">
+                        <Label text="HH" class="markingMediumLabel markingMediumLabelWidth2Rem sapUiSmallMarginEnd"/>
+                        <Input id="hhUnProdInputId" type="Number" value="{/hh}" showSuggestion="true" showValueHelp="false" liveChange="onHHInputChange" class="inputWidth2Percentage markingMediumLabelValue" />
+                    </HBox>
+                    <HBox width="15%" renderType="Bare" alignItems="Center">
+                        <Label text="MM" class="markingMediumLabel markingMediumLabelWidth2Rem sapUiSmallMarginEnd"/>
+                        <Input id="mmUnProdInputId" type="Number" value="{/mm}" showValueHelp="false" liveChange="onMMInputChange" class="inputWidth2Percentage markingMediumLabelValue" />
+                    </HBox>
+                </HBox>
+
+                <!-- Button -->
+                <HBox width="90%" height="10%"  renderType="Bare" alignItems="Center" justifyContent="End">
+                    <Button text="Cancel" type="Emphasized" press="onClosePopup" class="sapUiSmallMarginEnd" />
+                    <Button text="Confirm" type="Emphasized" press="onConfirmPress" />
+                </HBox> 
+            </VBox>
+        </content>
+    </Dialog>
+</core:FragmentDefinition>

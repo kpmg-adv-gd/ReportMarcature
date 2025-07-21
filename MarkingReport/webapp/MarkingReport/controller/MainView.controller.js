@@ -6,14 +6,16 @@ sap.ui.define([
     "sap/m/MessageBox",
     "../utilities/CommonCallManager",
     "./popup/MarkingPopup",
-    "./popup/InfoMarkingPopup"
-], function (jQuery, PluginViewController, JSONModel,Spreadsheet, MessageBox, CommonCallManager, MarkingPopup, InfoMarkingPopup) {
+    "./popup/InfoMarkingPopup",
+    "./popup/MarkingUnProdPopup"
+], function (jQuery, PluginViewController, JSONModel,Spreadsheet, MessageBox, CommonCallManager, MarkingPopup, InfoMarkingPopup,MarkingUnProdPopup) {
 	"use strict";
 
 	return PluginViewController.extend("kpmg.custom.markingReport.MarkingReport.MarkingReport.controller.MainView", {
         markingReportModel: new JSONModel(),
         MarkingPopup: new MarkingPopup(),
         InfoMarkingPopup: new InfoMarkingPopup(),
+        MarkingUnProdPopup: new MarkingUnProdPopup(),
 		onInit: function () {
 			PluginViewController.prototype.onInit.apply(this, arguments);
 			this.setInfoModel();
@@ -146,7 +148,10 @@ sap.ui.define([
                     actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.CANCEL], 
                     onClose: function(oAction) {          // Callback all'interazione
                         if (oAction=="OK") {
-                            that.sendStornoToSAP();
+                            if (that.getInfoModel().getProperty("/selectedConfirmation").sfc != null)
+                                that.sendStornoToSAP();
+                            else
+                                that.searchUnproductive("storno");
                         }
                     }
                 }
@@ -223,9 +228,91 @@ sap.ui.define([
             CommonCallManager.callProxy("POST", url, params, true, successCallback, errorCallback, that,true,true);
 
         },
+        sendStornoUnProdToSAP: function(){
+            var that=this;
+            var infoModel = that.getInfoModel();
+            var plant = infoModel.getProperty("/selectedConfirmation/plant");
+            var unproductive = infoModel.getProperty("/unproductive");
+            var selectedConfirmation = infoModel.getProperty("/selectedConfirmation");
+            var user = that.getInfoModel().getProperty("/user_id");
+
+
+            let params = {
+                plant: plant,
+                activityNumber: unproductive.network,
+                activityNumberId: unproductive.activity_id,
+                cancellation: "",
+                confirmation: "",
+                confirmationCounter: selectedConfirmation.confirmation_counter,
+                confirmationNumber: selectedConfirmation.confirmation_number,
+                date: selectedConfirmation.marking_date,
+                duration: selectedConfirmation.marked_labor,
+                durationUom: "HCN",
+                personalNumber: selectedConfirmation.personnelNumber,
+                reasonForVariance: "",
+                unCancellation: "X",
+                unConfirmation:"",
+                rowSelectedWBS: unproductive,
+                userId: user
+            }
+
+            let BaseProxyURL = infoModel.getProperty("/BaseProxyURL");
+            let pathSendMarkingApi = "/api/stornoUnproductive";
+            let url = BaseProxyURL + pathSendMarkingApi;
+
+            // Callback di successo
+            var successCallback = function (response) {
+                that.showToast(that.getI18n("marking.success.message"));
+                that.onGoPress();
+
+            };
+
+            // Callback di errore
+            var errorCallback = function (error) {
+                console.log("Chiamata POST fallita: ", error);
+                that.showErrorMessageBox(that.getI18n("marking.storno.error.markingDate"));
+            };
+            CommonCallManager.callProxy("POST", url, params, true, successCallback, errorCallback, that,true,true);
+
+        },
         onNewMarkPress: function(oEvent){
             var that=this;
-            that.MarkingPopup.open(that.getView(), that);
+            if (that.getInfoModel().getProperty("/selectedConfirmation").sfc != null) {
+                that.MarkingPopup.open(that.getView(), that);
+            }else{
+                that.searchUnproductive("mark");
+            }
+        },
+        searchUnproductive: function (mode) {
+            var that = this;
+            var plant = that.getInfoModel().getProperty("/plant");
+            var selectedConfirmation = that.getInfoModel().getProperty("/selectedConfirmation");
+
+            let params = {
+               plant: plant,
+               confirmationNumber: selectedConfirmation.confirmation_number
+            }
+
+            let BaseProxyURL = that.getInfoModel().getProperty("/BaseProxyURL");
+            let pathSendMarkingApi = "/db/getUnproductiveByConfirmationNumber";
+            let url = BaseProxyURL + pathSendMarkingApi;
+
+            // Callback di successo
+            var successCallback = function (response) {
+                if (response && response.length > 0) {
+                    that.getInfoModel().setProperty("/unproductive", response[0]);
+                    if (mode == "mark")
+                        that.MarkingUnProdPopup.open(that.getView(), that);
+                    else
+                        that.sendStornoUnProdToSAP();
+                }
+            };
+
+            // Callback di errore
+            var errorCallback = function (error) {
+                
+            };
+            CommonCallManager.callProxy("POST", url, params, true, successCallback, errorCallback, that);
         },
         onInfoMarkPress: function(oEvent){
             var that=this;
