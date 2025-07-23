@@ -17,7 +17,7 @@
                 <HBox width="90%" height="15%" renderType="Bare" justifyContent="SpaceAround">
                     <HBox renderType="Bare" alignItems="Center">
                         <Label text="Date" class="markingHeaderLabel markingSmallLabel sapUiSmallMarginEnd" width="auto"/>
-                        <Label text="{path: '/day', formatter: '.formatDate'}" class="markingSmallLabel" width="auto"/>
+                        <DatePicker value="{/day}"  valueFormat="dd/MM/yyyy" displayFormat="dd/MM/yyyy" class="markingSmallLabel" width="auto"/>
                     </HBox>
                     <HBox renderType="Bare" alignItems="Center" >
                         <Label text="Marked Labor" class="markingHeaderLabel markingSmallLabel sapUiSmallMarginEnd" width="auto"/>

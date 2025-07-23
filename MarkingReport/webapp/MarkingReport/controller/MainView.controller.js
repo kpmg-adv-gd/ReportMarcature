@@ -131,6 +131,11 @@ sap.ui.define([
 				var selectedObject = oTable.getContextByIndex(selectedIndex).getObject();
                 that.getInfoModel().setProperty("/selectedConfirmation",selectedObject);
 				that.getView().getModel("MarkingReportModel").setProperty("/hasSelectedRow",true);
+                if (selectedObject.sfc != null) {
+                    that.getView().getModel("MarkingReportModel").setProperty("/noUnprod",true);
+                }else{
+                    that.getView().getModel("MarkingReportModel").setProperty("/noUnprod",false);
+                }
 			} else {
 				that.getInfoModel().setProperty("/selectedConfirmation",undefined);
 				that.getView().getModel("MarkingReportModel").setProperty("/hasSelectedRow",false);
@@ -248,7 +253,7 @@ sap.ui.define([
                 date: selectedConfirmation.marking_date,
                 duration: selectedConfirmation.marked_labor,
                 durationUom: "HCN",
-                personalNumber: selectedConfirmation.personnelNumber,
+                personalNumber: selectedConfirmation.user_personal_number,
                 reasonForVariance: "",
                 unCancellation: "X",
                 unConfirmation:"",
@@ -316,6 +321,8 @@ sap.ui.define([
         },
         onInfoMarkPress: function(oEvent){
             var that=this;
+            var selectedConfirmation = that.getInfoModel().getProperty("/selectedConfirmation");
+            if (selectedConfirmation.sfc == null) return;
             that.InfoMarkingPopup.open(that.getView(), that);
         },
         onExportExcel: function () {
@@ -352,7 +359,8 @@ sap.ui.define([
                 { label: "Operation Total Remaining Labor", property: "remaining_labor" },
                 { label: "Operation Total Remaining Labor UoM", property: "uom_remaining_labor" },
                 { label: "Operation Total Variance Labor", property: "variance_labor_total" },
-                { label: "Operation Total Variance Labor UoM", property: "uom_variance_total" }
+                { label: "Operation Total Variance Labor UoM", property: "uom_variance_total" },
+                { label: "Defect", property: "defect_description" }
             ];
 
             var aData = that.getView().getModel("MarkingReportModel").getProperty("/OpConfirmations");

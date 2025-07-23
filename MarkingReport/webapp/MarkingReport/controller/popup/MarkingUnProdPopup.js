@@ -22,7 +22,7 @@ sap.ui.define([
             var unproductive = that.MainViewController.getInfoModel().getProperty("/unproductive");
 
             that.MarkingUnProdPopupModel.setProperty("/day", selectedConfirmation.marking_date);
-            that.MarkingUnProdPopupModel.setProperty("/value", (selectedConfirmation.marked_labor / 100).toFixed(2));
+            that.MarkingUnProdPopupModel.setProperty("/value", that.formatHCN(selectedConfirmation.marked_labor));
             that.MarkingUnProdPopupModel.setProperty("/personnelNumber", selectedConfirmation.user_personal_number);
             that.MarkingUnProdPopupModel.setProperty("/confirmationNumber", selectedConfirmation.confirmation_number);
             that.MarkingUnProdPopupModel.setProperty("/wbsDescription", unproductive.wbs_description);
@@ -102,13 +102,14 @@ sap.ui.define([
             // Callback di successo
             var successCallback = function (response) {
                 that.MainViewController.showToast(that.MainViewController.getI18n("marking.success.message"));
+                that.MainViewController.onGoPress();
                 that.onClosePopup();
             };
 
             // Callback di errore
             var errorCallback = function (error) {
                 console.log("Chiamata POST fallita: ", error);
-                that.MainViewController.showErrorMessageBox(error);
+                that.MainViewController.showErrorMessageBox(that.MainViewController.getI18n("marking.errorUnprod.message"));
             };
             CommonCallManager.callProxy("POST", url, params, true, successCallback, errorCallback, that,true,true);
         },
@@ -147,6 +148,18 @@ sap.ui.define([
         onClosePopup: function () {
             var that = this;
             that.closeDialog();
+        },
+
+        formatDate: function (dateStr) {
+            const [day, month, year] = dateStr.split("/");
+            const fullYear = year.length === 2 ? "20" + year : year; // oppure logica personalizzata
+            return `${day}/${month}/${fullYear}`;
+        },
+
+        formatHCN: function(centesimi) {
+            const ore = Math.floor(centesimi / 100);
+            const minuti = Math.round((centesimi % 100) * 0.6); // 1 centesimo = 0.6 minuti
+            return ore + "h " + minuti.toString().padStart(2, '0') + "m";
         }
     })
 }
