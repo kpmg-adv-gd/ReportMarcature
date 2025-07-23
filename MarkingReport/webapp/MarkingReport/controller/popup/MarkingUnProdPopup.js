@@ -117,7 +117,7 @@ sap.ui.define([
             var that = this;
             var hhInputValue = that.getView().byId("hhUnProdInputId").getValue();
             var mmInputValue = that.getView().byId("mmUnProdInputId").getValue();
-
+            var day = that.MarkingUnProdPopupModel.getProperty("/day")
 
             if( (hhInputValue == "" && mmInputValue=="") || (parseInt(hhInputValue,10)==0 && parseInt(mmInputValue,10)==0) ){
                 return false;
@@ -128,6 +128,9 @@ sap.ui.define([
             } else if (mmInputValue==""){
                 mmInputValue="00";
             }
+
+            // Valid check date (exists and not future)
+            if (!day || day == "" || new Date(that.parseDateFromString(day)).getTime() > new Date().getTime()) return false;
 
             if(parseInt(mmInputValue,10)<0 || parseInt(mmInputValue,10)>59) return false;
 
@@ -154,6 +157,11 @@ sap.ui.define([
             const [day, month, year] = dateStr.split("/");
             const fullYear = year.length === 2 ? "20" + year : year; // oppure logica personalizzata
             return `${day}/${month}/${fullYear}`;
+        },
+
+        parseDateFromString: function(dateStr) {
+            const [day, month, year] = dateStr.split('/').map(Number);
+            return new Date(year, month - 1, day); // i mesi partono da 0 (gennaio)
         },
 
         formatHCN: function(centesimi) {
