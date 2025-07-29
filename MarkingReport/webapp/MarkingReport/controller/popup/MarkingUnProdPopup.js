@@ -145,7 +145,7 @@ sap.ui.define([
             if (that.validate()) {
                 that.sendToSapAndInsertIntoZTable();
             } else {
-                that.MainViewController.showErrorMessageBox(that.MainViewController.getI18n("marking.error.message"));
+                that.MainViewController.showErrorMessageBox(that.MainViewController.getI18n("marking.errorNonProd.message"));
             }
         },
         onClosePopup: function () {

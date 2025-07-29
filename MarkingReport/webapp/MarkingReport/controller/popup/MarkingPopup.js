@@ -471,28 +471,8 @@ sap.ui.define([
 
             if(parseInt(mmInputValue,10)<0 || parseInt(mmInputValue,10)>59) return false;
 
-            //Logica per capire se la marcatura non sia avvenuta prima del secondo giorno del mese precdente
-            // function convertToDate(dateStr) {
-            //     let parts = dateStr.split("/");
-            //     return new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
-            // }
-            // let markingDate = convertToDate(sMarkingDate);
-            // let today = new Date();
-            // if (markingDate > today) {
-            //     return false;
-            // }
-            // let dayMarking = sMarkingDate.split("/")[0];
-            // let monthsMarking = sMarkingDate.split("/")[1];
-            // let yearMarking = sMarkingDate.split("/")[2];
-            // let comparingDate = new Date();
-            // //Data attuale con il primo giorno del mese
-            // comparingDate.setDate(1);
-            // if(today.getDate()<=2){
-            //     comparingDate.setMonth(monthsMarking-1);
-            // }
-            // comparingDate.setHours(0,0,0,0);
-            // if(markingDate<comparingDate) return false;
-
+            // Valid check date (exists and not future)
+            if (!sMarkingDate || sMarkingDate == "" || new Date(that.parseDateFromString(sMarkingDate)).getTime() > new Date().getTime()) return false;
 
             var confirmation_number = that.MarkingPopupModel.getProperty("/confirmNumber");
             var personnelNumber = that.getView().byId("personnelNumberId").getValue();
@@ -513,6 +493,11 @@ sap.ui.define([
             } else {
                 that.MainViewController.showErrorMessageBox(that.MainViewController.getI18n("marking.error.message"));
             }
+        },
+        
+        parseDateFromString: function(dateStr) {
+            const [day, month, year] = dateStr.split('/').map(Number);
+            return new Date(year, month - 1, day); // i mesi partono da 0 (gennaio)
         },
         onClosePopup: function () {
             var that = this;

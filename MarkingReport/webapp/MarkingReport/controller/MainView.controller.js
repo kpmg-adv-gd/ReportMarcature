@@ -241,6 +241,10 @@ sap.ui.define([
             var selectedConfirmation = infoModel.getProperty("/selectedConfirmation");
             var user = that.getInfoModel().getProperty("/user_id");
 
+            if(!that.validateMarkingDate(selectedConfirmation.marking_date)){
+                that.showErrorMessageBox(that.getI18n("marking.storno.error.markingDate"));
+                return;
+            }
 
             let params = {
                 plant: plant,
@@ -275,7 +279,7 @@ sap.ui.define([
             // Callback di errore
             var errorCallback = function (error) {
                 console.log("Chiamata POST fallita: ", error);
-                that.showErrorMessageBox(that.getI18n("marking.storno.error.markingDate"));
+                that.showErrorMessageBox(that.getI18n("marking.saveData.error.message"));
             };
             CommonCallManager.callProxy("POST", url, params, true, successCallback, errorCallback, that,true,true);
 
@@ -390,6 +394,8 @@ sap.ui.define([
             if (markingDate > today) {
                 return false;
             }
+            return true;
+            /*
             let monthsMarking = marking_date.split("/")[1];
             let comparingDate = new Date();
             //Data attuale con il primo giorno del mese
@@ -400,6 +406,7 @@ sap.ui.define([
             comparingDate.setHours(0,0,0,0);
             if(markingDate<comparingDate) return false;
             return true;
+            */
         },
         getTodayDateAsString: function(){
             const oggi = new Date();
