@@ -109,7 +109,7 @@ sap.ui.define([
             // Callback di errore
             var errorCallback = function (error) {
                 console.log("Chiamata POST fallita: ", error);
-                that.MainViewController.showErrorMessageBox(that.MainViewController.getI18n("marking.errorUnprod.message"));
+                that.MainViewController.showErrorMessageBox(error);
             };
             CommonCallManager.callProxy("POST", url, params, true, successCallback, errorCallback, that,true,true);
         },
