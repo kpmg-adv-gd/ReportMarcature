@@ -118,9 +118,9 @@ sap.ui.define([
 
             // Callback di errore
             var errorCallback = function(error) {
-                console.log("Chiamata POST fallita:", error);
+                that.showErrorMessageBox(error);
             };
-            CommonCallManager.callProxy("POST", url, params, true, successCallback, errorCallback, that);
+            CommonCallManager.callProxy("POST", url, params, true, successCallback, errorCallback, that, true, true);
 		},
 		rowSelectionChange: function(oEvent){
 			var that=this;
@@ -279,7 +279,7 @@ sap.ui.define([
             // Callback di errore
             var errorCallback = function (error) {
                 console.log("Chiamata POST fallita: ", error);
-                that.showErrorMessageBox(that.getI18n("marking.saveData.error.message"));
+                that.showErrorMessageBox(error);
             };
             CommonCallManager.callProxy("POST", url, params, true, successCallback, errorCallback, that,true,true);
 

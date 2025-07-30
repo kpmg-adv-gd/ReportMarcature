@@ -6,7 +6,7 @@
                 <HBox width="100%" height="8%" class="smallPadding" renderType="Bare">
                     <HBox width="70%" justifyContent="Start" height="100%" alignItems="Center" renderType="Bare">
                         <HBox width="25%" height="100%" alignItems="Center" renderType="Bare">
-                            <Label text="{i18n>markingReport.label.project}:*" width="100%" textAlign="Left" class="kpmgGDMediumlLabelInfo autoWidth" />
+                            <Label text="{i18n>markingReport.label.project}:" width="100%" textAlign="Left" class="kpmgGDMediumlLabelInfo autoWidth" />
                             <Input id="projectInputId" placeholder="Enter Project ..." showSuggestion="true" showValueHelp="false" suggestionItems="{FilterModel>/Project}" class="width70Percentage padding1PercentageLeft">
                                 <suggestionItems>
                                     <core:Item text="{FilterModel>DATA_FIELD_VALUE}" />
@@ -129,6 +129,12 @@
                                 <Label text="{i18n>markingReport.table.reason_for_variance}"  />
                                 <t:template>
                                     <Text wrapping="false" text="{MarkingReportModel>reason_for_variance}"  />
+                                </t:template>
+                            </t:Column>
+                            <t:Column sortProperty="child_material" filterProperty="child_material" width="5.6%" hAlign="Center">
+                                <Label text="{i18n>markingReport.table.material}"  />
+                                <t:template>
+                                    <Text wrapping="false" text="{MarkingReportModel>child_material}"  />
                                 </t:template>
                             </t:Column>
                             <t:Column sortProperty="user_id" filterProperty="user_id" width="8.6%" hAlign="Center">
