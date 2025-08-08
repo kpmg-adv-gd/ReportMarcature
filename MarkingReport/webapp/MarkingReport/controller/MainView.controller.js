@@ -350,8 +350,10 @@ sap.ui.define([
                 { label: "Variance Labor UoM", property: "uom_variance_labor" },
                 { label: "Variance", property: "reason_for_variance" },
                 { label: "Variance Description", property: "variance_description" },
-                { label: "Eng.Changes", property: "modification" },
+                { label: "Material", property: "child_material" },
                 { label: "User Id", property: "user_id" },
+                { label: "Eng.Changes", property: "modification" },
+                { label: "Defect", property: "defect_description" },
                 { label: "User Personal Number", property: "user_personal_number" },
                 { label: "Cancellation Flag", property: "cancellation_flag" },
                 { label: "Cancelled By", property: "cancelled_by" },
@@ -363,8 +365,7 @@ sap.ui.define([
                 { label: "Operation Total Remaining Labor", property: "remaining_labor" },
                 { label: "Operation Total Remaining Labor UoM", property: "uom_remaining_labor" },
                 { label: "Operation Total Variance Labor", property: "variance_labor_total" },
-                { label: "Operation Total Variance Labor UoM", property: "uom_variance_total" },
-                { label: "Defect", property: "defect_description" }
+                { label: "Operation Total Variance Labor UoM", property: "uom_variance_total" }
             ];
 
             var aData = that.getView().getModel("MarkingReportModel").getProperty("/OpConfirmations");
