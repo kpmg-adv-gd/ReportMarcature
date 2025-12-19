@@ -256,6 +256,7 @@ sap.ui.define([
                 confirmationNumber: selectedConfirmation.confirmation_number,
                 date: selectedConfirmation.marking_date,
                 duration: selectedConfirmation.marked_labor,
+                varianceLabor: selectedConfirmation.variance_labor,
                 durationUom: "HCN",
                 personalNumber: selectedConfirmation.user_personal_number,
                 reasonForVariance: "",
@@ -350,10 +351,8 @@ sap.ui.define([
                 { label: "Variance Labor UoM", property: "uom_variance_labor" },
                 { label: "Variance", property: "reason_for_variance" },
                 { label: "Variance Description", property: "variance_description" },
-                { label: "Material", property: "child_material" },
-                { label: "User Id", property: "user_id" },
                 { label: "Eng.Changes", property: "modification" },
-                { label: "Defect", property: "defect_description" },
+                { label: "User Id", property: "user_id" },
                 { label: "User Personal Number", property: "user_personal_number" },
                 { label: "Cancellation Flag", property: "cancellation_flag" },
                 { label: "Cancelled By", property: "cancelled_by" },
@@ -365,7 +364,8 @@ sap.ui.define([
                 { label: "Operation Total Remaining Labor", property: "remaining_labor" },
                 { label: "Operation Total Remaining Labor UoM", property: "uom_remaining_labor" },
                 { label: "Operation Total Variance Labor", property: "variance_labor_total" },
-                { label: "Operation Total Variance Labor UoM", property: "uom_variance_total" }
+                { label: "Operation Total Variance Labor UoM", property: "uom_variance_total" },
+                { label: "Defect", property: "defect_description" }
             ];
 
             var aData = that.getView().getModel("MarkingReportModel").getProperty("/OpConfirmations");

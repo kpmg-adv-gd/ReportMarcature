@@ -8,7 +8,7 @@
     width="100%"
     height="100%"
 >
-    <Dialog id="markingUnProdDialog" title="Marking" showHeader="true" contentHeight="480px" contentWidth="840px" verticalScrolling="false" horizontalScrolling="false"> 
+    <Dialog id="markingUnProdDialog" title="Marking" showHeader="true" contentHeight="600px" contentWidth="870px" verticalScrolling="false" horizontalScrolling="false"> 
         <content>
             <!-- Container principale -->
             <VBox width="100%" height="100%" renderType="Bare" alignItems="Center" justifyContent="SpaceBetween">
@@ -63,6 +63,47 @@
                         <Label text="MM" class="markingMediumLabel markingMediumLabelWidth2Rem sapUiSmallMarginEnd"/>
                         <Input id="mmUnProdInputId" type="Number" value="{/mm}" showValueHelp="false" liveChange="onMMInputChange" class="inputWidth2Percentage markingMediumLabelValue" />
                     </HBox>
+                </HBox>
+
+                <HBox width="90%" height="35%" renderType="Bare" justifyContent="SpaceBetween" visible="{/coordinationActivity}">
+                    <!-- Input principale -->
+                    <VBox width="50%"  renderType="Bare">
+                        <HBox renderType="Bare" alignItems="Center">
+                            <Label text="Defects" class="markingMediumLabel markingMediumLabelWidth9Rem"/>
+                            <Select id="defectsID" selectedKey="{/defectSelected}" width="50%" items="{/defects}" change="onChangeDefect">
+                                <core:Item key="{id}" text="{title}" />
+                            </Select>
+                        </HBox>
+                        <HBox renderType="Bare" alignItems="Center">
+                            <Label text="Eng.Changes" class="markingMediumLabel markingMediumLabelWidth9Rem"/>
+                            <Label id="selectedUpdateTextUnp" class="markingReasonDesc"/>
+                            <Button id="updateButtonUnp" press="onUpdateButtonPressed" icon="sap-icon://arrow-down" />
+                        </HBox>
+                        <HBox renderType="Bare" alignItems="Center">
+                            <Label text="Variance" class="markingMediumLabel markingMediumLabelWidth9Rem"/>
+                            <Label id="selectedVarianceTextUnp" class="markingReasonDesc"/>
+                            <Button id="varianceButtonUnp" press="onVarianceButtonPressed" icon="sap-icon://arrow-down" />
+                        </HBox>
+                    </VBox>
+                    <!-- Ore previste/consuntivate/rimanenti -->
+                    <VBox width="30%" class="markingHoursContainer" renderType="Bare">
+                        <HBox class="markingHoursRow">
+                            <Label text="Planned Labor" class="markingMediumLabel"/>
+                            <Label text="{/plannedLabor} {/uom_planned_labor}" class="markingMediumLabelValue"/>
+                        </HBox>
+                        <HBox class="markingHoursRow">
+                            <Label text="Marked Labor" class="markingMediumLabel"/>
+                            <Label text="{/markedLabor} {/uom_marked_labor}" class="markingMediumLabelValue"/>
+                        </HBox>
+                        <HBox class="markingHoursRow">
+                            <Label text="Delta Labor" class="markingMediumLabel"/>
+                            <Label text="{/remainingLabor} {/uom_marked_labor}" class="markingMediumLabelValue"/>
+                        </HBox>
+                        <HBox class="markingHoursRow">
+                            <Label text="Variance Labor" class="markingMediumLabel"/>
+                            <Label text="{/varianceLabor} {/uom_planned_labor}" class="markingMediumLabelValue"/>
+                        </HBox>
+                    </VBox>
                 </HBox>
 
                 <!-- Button -->

@@ -54,6 +54,7 @@ sap.ui.define([
             let oSelectedVarianceLabel = that.getView().byId("selectedVarianceText");
             let varianceDescription = selectedConfirmation.variance_description;
             oSelectedVarianceLabel.setText(varianceDescription)
+            that._selectedCause = selectedConfirmation.cause;
 
             let plannedLabor = selectedConfirmation.planned_labor;
             let uom_planned_labor = selectedConfirmation.uom_planned_labor;
@@ -72,7 +73,7 @@ sap.ui.define([
             that.MarkingPopupModel.setProperty("/uom_remaining_labor", uom_remaining_labor || "hcn");
             that.MarkingPopupModel.setProperty("/varianceLabor", Math.round(varianceLabor));
             that.MarkingPopupModel.setProperty("/uom_variance", uom_variance || "hcn");
-                
+            that.getZDefects();
         },
         onGetReasonsForVariance: function () {
             var that = this;
@@ -356,9 +357,6 @@ sap.ui.define([
             };
             CommonCallManager.callProxy("POST", url, params, true, successCallback, errorCallback, that);
         },
-        onDefectButtonPressed: function(){
-            var that=this;
-        },
         onHHInputChange: function(oEvent){
             var that=this;
             let value = oEvent.getParameters().value;
@@ -371,6 +369,33 @@ sap.ui.define([
             let value = oEvent.getParameters().value;
             let mmInput = that.getView().byId("mmInputId");
             if(value.length>2) mmInput.setValue(value.substring(0,2));
+        },
+        getZDefects: function () {
+            var that=this;
+            var infoModel = that.MainViewController.getInfoModel();
+            
+            var plant = infoModel.getProperty("/plant");
+
+            let BaseProxyURL = infoModel.getProperty("/BaseProxyURL");
+            let pathOrderBomApi = "/db/selectZDefectByWBE";
+            let url = BaseProxyURL+pathOrderBomApi; 
+
+            var selectedConfirmation = that.MainViewController.getInfoModel().getProperty("/selectedConfirmation");
+            let params={
+                plant:plant,
+                wbe: that.MarkingPopupModel.getProperty("/wbe") || ""
+            };
+
+            // Callback di successo
+            var successCallback = function(response) {
+                that.MarkingPopupModel.setProperty("/defects", [...[{id:"", title:"", variance: ""}], ...response]);
+                that.MarkingPopupModel.setProperty("/defectSelected", selectedConfirmation.defect_id);
+            };
+            // Callback di errore
+            var errorCallback = function(error) {
+                console.log("Chiamata POST fallita:", error);
+            };
+            CommonCallManager.callProxy("POST", url, params, true, successCallback, errorCallback, that);
         },
         sendToSapAndInsertIntoZTable: function () {
             var that = this;
@@ -396,6 +421,8 @@ sap.ui.define([
             var modification = that.getView().byId("selectedUpdateText").getText() || "";
             var hh = parseInt(that.getView().byId("hhInputId").getValue(),10);
             var mm = parseInt(that.getView().byId("mmInputId").getValue(),10);
+            var defectId = that.MarkingPopupModel.getProperty("/defectSelected");
+
             if(!hh) hh=0;
             if(!mm) mm=0;
 
@@ -427,7 +454,8 @@ sap.ui.define([
                 confirmation: "X",
                 cancellation: "",
                 modification: modification,
-                cancelled_confirmation: null
+                cancelled_confirmation: null,
+                defectId: defectId != "" ? defectId : null
             }
 
             let BaseProxyURL = infoModel.getProperty("/BaseProxyURL");
@@ -454,6 +482,7 @@ sap.ui.define([
             var sMarkingDate = that.getView().byId("markingDatePicker").getValue();
             var hhInputValue = that.getView().byId("hhInputId").getValue();
             var mmInputValue = that.getView().byId("mmInputId").getValue();
+            var defectSelected = that.MarkingPopupModel.getProperty("/defectSelected");
 
             if (!sMarkingDate) {
                 return false;
@@ -481,8 +510,17 @@ sap.ui.define([
             let reason_for_variance = that._selectedCause || "";
             let modification = that.getView().byId("selectedUpdateText").getText() || "";
             if(!reason_for_variance && !!modification) return false;
+            if(!!reason_for_variance && !modification && !defectSelected) return false;
 
             return true;
+        },
+        onChangeDefect: function (oEvent) {
+            var that = this;
+            var variance = this.MarkingPopupModel.getProperty("/defects").filter(item => item.id == this.MarkingPopupModel.getProperty("/defectSelected"))[0].variance;
+            var variance_description = this.MarkingPopupModel.getProperty("/defects").filter(item => item.id == this.MarkingPopupModel.getProperty("/defectSelected"))[0].variance_description;
+            that.getView().byId("selectedVarianceText").setText(variance);
+            that._selectedCause = variance
+            that._selectedDescription = variance_description
         },
         onConfirm: function () {
             var that = this;
