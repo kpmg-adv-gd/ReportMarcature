@@ -455,7 +455,7 @@ sap.ui.define([
                 cancellation: "",
                 modification: modification,
                 cancelled_confirmation: null,
-                defectId: defectId != "" ? defectId : null
+                defectId: defectId != "" ? defectId : null,
             }
 
             let BaseProxyURL = infoModel.getProperty("/BaseProxyURL");
