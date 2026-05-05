@@ -86,7 +86,7 @@
                             <t:Column sortProperty="operation" filterProperty="operation" width="13.6%" hAlign="Center">
                                 <Label wrapping="false" text="{i18n>markingReport.table.operation}"  />
                                 <t:template>
-                                    <Text wrapping="false" text="{MarkingReportModel>operation}"  />
+                                    <Text wrapping="false" text="{MarkingReportModel>operation_description}"  />
                                 </t:template>
                             </t:Column>
                             <t:Column sortProperty="workcenter" filterProperty="workcenter" width="5.2%" hAlign="Center">
