@@ -184,6 +184,7 @@ sap.ui.define([
             var reason_for_variance = that._selectedCause || "";
             var user_id = infoModel.getProperty("/user_id") || "";
             var cancelled_confirmation = infoModel.getProperty("/selectedConfirmation/confirmation_counter") || "";
+            var phase = infoModel.getProperty("/selectedConfirmation/phase") || "";
 
             if(!that.validateMarkingDate(marking_date)){
                 that.showErrorMessageBox(that.getI18n("marking.storno.error.markingDate"));
@@ -211,7 +212,8 @@ sap.ui.define([
                 confirmation: "",
                 cancellation: "X",
                 modification: "",
-                cancelled_confirmation: cancelled_confirmation
+                cancelled_confirmation: cancelled_confirmation,
+                phase: phase
             }
 
             let BaseProxyURL = infoModel.getProperty("/BaseProxyURL");
